@@ -1,0 +1,92 @@
+<div class="row">
+    <toaster-container></toaster-container>
+    <form role="form">
+        <div class="col-lg-12">
+            <h1 class="page-header" ng-if="create">Create Project Summary</h1>
+            <h1 class="page-header" ng-if="!create">Edit Project Summary</h1>
+            <p class="proj-summary-title">{{project.title}}</p>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Activities
+                    <div class="p-summary-icons">
+                        <!--<a><i class="fa fa-trash-o fa-fw"></i></a>&nbsp;-->
+                        <a href="" ng-click="addNewActivity()"><i class="fa fa-plus-circle fa-fw"></i></a>
+                    </div>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <div class="Table">
+                            <div class="Heading divthead">
+                                <div class="Cell">
+                                    <span>Name</span>
+                                </div>
+                                <div class="Cell">
+                                    <span>Resources (with Details & Quantity/Amount)</span>
+                                </div>
+                                <!--<div class="Cell">
+                                    <span>&nbsp;</span>
+                                </div>-->
+                                <div class="Cell">
+                                    <span>Status (check if completed)</span>
+                                </div>
+                            </div>
+                            <div class="Row" ng-repeat="activity in activitySet.activityResources track by $index">
+                                <div class="Cell form-group">
+                                    <span class="col-lg-1 pull-left">
+                                        <a href="" ng-click="removeActivity($index)"><i class="fa fa-trash-o fa-fw fa-2x"></i></a>
+                                    </span>
+                                    <span class="col-lg-9">
+                                        <input ng-model="activity.name" type="text" class="form-control" placeholder="Activity Name">
+                                    </span>
+                                </div>
+                                <div class="Cell form-group">
+                                    <div class="cell-container" ng-repeat="res in activity.resources track by $index">
+                                        <div class="field-holder col-lg-4">
+                                            <select ng-model="res.type" class="form-control" ng-options="resourceType for resourceType in availResourcesList">
+                                                <option>Select Resources</option>
+                                            </select>
+                                        </div>
+                                        <div class="field-holder col-lg-3" >
+                                            <select ng-if="!checkIfDescription(res.type)" ng-disabled="true" class="form-control">
+                                            </select>
+                                            <select ng-if="checkIfDescription(res.type)" ng-model="res.description" class="form-control" ng-options="resourceDesc for resourceDesc in getDescList(res.type)">
+                                                <option>Select Description</option>
+                                            </select>
+                                        </div>
+                                        <div class="field-holder col-lg-2 col-lg-offset-0">
+                                            <a ng-if="!checkIfDelete($index, activity)" href="" ng-click="addNewResourceOnActivity(activity)"><i class="fa fa-plus-circle fa-fw fa-2x"></i></a>
+                                            <a ng-if="checkIfDelete($index, activity)" href="" ng-click="removeResourceOnActivity(activity, $index)"><i class="fa fa-minus-circle fa-fw fa-2x"></i></a>
+                                        </div>
+                                        <div class="field-holder col-lg-2 col-lg-offset-1 tooltip-demo" data-tip="Available: {{getOnhand(res.type, res.description)}}" style="float:right;">
+                                            <input ng-model="res.qty" type="text" class="form-control" placeholder="Quantity">
+                                        </div>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <div class="Cell">
+                                    <!--<p>-->
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-model="activity.finished">
+                                        </label>
+                                    </div>
+                                    <!--</p>-->
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <div class="col-lg-6"></div>
+                            <button ng-click="cancelChanges()" class="btn btn-primary">&nbsp;&nbsp; Cancel &nbsp; &nbsp;</button>
+                            <button ng-click="saveChanges()" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+    </form>
+</div>
